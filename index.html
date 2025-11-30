@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedbackEl = document.getElementById('feedback');
   const userInput = document.getElementById('user-answer');
   const scoreEl = document.getElementById('score');
- const quizzes = {
+  const quizzes = {
     compression: [
         { q: "What is compression?", choices: ["Increases file size", "Reduces file size for storage and transfer", "Deletes the file", "Changes file type only"], a: 1 },
         { q: "Which is an example of lossy compression?", choices: ["JPEG image", "ZIP file", "PNG image", "Text file"], a: 0 },
@@ -56,57 +56,62 @@ document.addEventListener('DOMContentLoaded', () => {
         { q: "Which tag creates a list item?", choices: ["<li>", "<ul>", "<ol>", "<list>"], a: 0 }
     ]
 };
-let currentQuiz = [];
-let currentIndex = 0;
-let correctCount = 0;
-  window.startQuiz = function(topic) {
+let quizCurrentQuiz = [];
+let quizCurrentIndex = 0;
+let quizCorrectCount = 0;
+
+window.startQuiz = function(topic) {
     if (!quizzes[topic]) return;
-    currentQuiz = quizzes[topic];
-    currentIndex = 0;
-    correctCount = 0;
-    showQuestion();
+    quizCurrentQuiz = quizzes[topic];
+    quizCurrentIndex = 0;
+    quizCorrectCount = 0;
+    showQuizQuestion();
 }
 
-window.showQuestion = function() {
+window.showQuizQuestion = function() {
     const quizArea = document.getElementById('quiz-area');
     quizArea.innerHTML = '';
 
-    if (currentIndex >= currentQuiz.length) {
-        quizArea.innerHTML = `<p>You scored ${correctCount} out of ${currentQuiz.length}!</p>
-                              <button onclick="startQuiz('${currentQuiz[0]?.topic||'compression'}')">Retry</button>`;
+    if (quizCurrentIndex >= quizCurrentQuiz.length) {
+        quizArea.innerHTML = `<p>You scored ${quizCorrectCount} out of ${quizCurrentQuiz.length}!</p>
+                              <button onclick="startQuiz('${quizCurrentQuiz[0]?.topic||'compression'}')">Retry</button>`;
         return;
     }
 
-    const q = currentQuiz[currentIndex];
+    const q = quizCurrentQuiz[quizCurrentIndex];
     const div = document.createElement('div');
-    div.innerHTML = `<p><strong>Q${currentIndex+1}:</strong> ${q.q}</p>`;
+    div.innerHTML = `<p><strong>Q${quizCurrentIndex+1}:</strong> ${q.q}</p>`;
 
     q.choices.forEach((choice, i) => {
         const btn = document.createElement('button');
         btn.textContent = choice;
         btn.style.display = 'block';
         btn.style.margin = '4px 0';
-        // reference the global function
-        btn.onclick = () => window.checkAnswer(i);
+        btn.onclick = () => selectAnswer(i);
         div.appendChild(btn);
     });
 
     quizArea.appendChild(div);
 }
 
-window.checkAnswer = function(selectedIndex) {
+window.selectAnswer = function(selectedIndex) {
     const quizArea = document.getElementById('quiz-area');
-    const q = currentQuiz[currentIndex];
+    const q = quizCurrentQuiz[quizCurrentIndex];
 
     if (selectedIndex === q.a) {
-        correctCount++;
+        quizCorrectCount++;
         quizArea.innerHTML = `<p>✔ Correct!</p>`;
     } else {
         quizArea.innerHTML = `<p>✘ Wrong! Correct answer: ${q.choices[q.a]}</p>`;
     }
-
-    currentIndex++;
-    setTimeout(showQuestion, 1000);
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = quizCurrentIndex + 1 < quizCurrentQuiz.length ? "Next Question" : "Finish Quiz";
+    nextBtn.style.marginTop = '8px';
+    nextBtn.onclick = () => {
+        quizCurrentIndex++;
+        showQuizQuestion();
+    }
+    quizArea.appendChild(nextBtn);
 }
   if (!binaryEl) {
     console.error('Missing element: #binary-number. Make sure your HTML has <p id="binary-number"></p>');
