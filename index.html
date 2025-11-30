@@ -6,7 +6,6 @@
 </head>
 <body>
   <h1>Computer Science Revision</h1>
-  <p>Binary to Denary + Quizzes</p>
   <hr>
   <h2>Binary to Denary</h2>
   <p>Computers only understand 0 (off) and 1 (on).</p>
@@ -24,30 +23,68 @@
     <p>Score:<span id="score">0</span></p>
   </div>
   <hr>
-  <script>
-    let score = 0;
-    let currentBinary = "";
-    // Generate a random 4-8 bit binary number
-    function generateBinary() {
-      const length = Math.floor(Math.random() * 5) + 4; // 4 to 8 bits
-      currentBinary = '';
-      for (let i = 0; i < length; i++ {
-        currentBinary += Math.floor(Math.random() * 2); // adds 0 or 1
-      }
-      document.getElementById("binary-number").textContent = currentBinary;
-      document.getElementById("feedback").textContent = "";
-      document.getElementById("user-answer").value = "";
-    }
-    // convert user's input + check answer
-    function checkAnswer() {
-      score++;
-      document.getElementById("feedback").textContent = "✓ Correct!";
-    } else {
-      document.getElementById("feedback").textContent = "✗ Incorrect! Correct answer: " +correct;
-    }
-    // when page loads generate a number
-    generateBinary();
-  </script>
   
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const binaryEl = document.getElementById('binary-number');
+  const feedbackEl = document.getElementById('feedback');
+  const userInput = document.getElementById('user-answer');
+  const scoreEl = document.getElementById('score');
+
+  if (!binaryEl) {
+    console.error('Missing element: #binary-number. Make sure your HTML has <p id="binary-number"></p>');
+    if (feedbackEl) feedbackEl.textContent = 'Error: game not set up correctly (see console).';
+    return;
+  }
+
+  let score = 0;
+  let currentBinary = '';
+
+  // generate a random binary string of length 4..8
+  function generateBinary() {
+    const length = Math.floor(Math.random() * 5) + 4; // 4..8
+    let bin = '';
+    for (let i = 0; i < length; i++) {
+      bin += Math.random() < 0.5 ? '0' : '1';
+    }
+    currentBinary = bin;
+    binaryEl.textContent = currentBinary;
+    if (feedbackEl) feedbackEl.textContent = '';
+    if (userInput) userInput.value = '';
+    console.log('New binary generated:', currentBinary);
+  }
+
+  function checkAnswer() {
+    if (currentBinary === '') {
+      if (feedbackEl) feedbackEl.textContent = 'No binary number available — click "New Number".';
+      console.warn('checkAnswer called but no currentBinary present.');
+      return;
+    }
+    const userValRaw = userInput ? userInput.value : '';
+    const userVal = userValRaw === '' ? NaN : Number(userValRaw);
+    const correct = parseInt(currentBinary, 2);
+    if (Number.isNaN(userVal)) {
+      if (feedbackEl) feedbackEl.textContent = 'Please type a number.';
+      return;
+    }
+    if (userVal === correct) {
+      score++;
+      if (feedbackEl) feedbackEl.textContent = '✔ Correct!';
+    } else {
+      if (feedbackEl) feedbackEl.textContent = '✘ Wrong! Correct: ' + correct;
+    }
+    if (scoreEl) scoreEl.textContent = score;
+    console.log('Checked answer. user:', userVal, 'correct:', correct, 'score:', score);
+  }
+  window.generateBinary = generateBinary;
+  window.checkAnswer = checkAnswer;
+  try {
+    generateBinary();
+  } catch (err) {
+    console.error('Error while generating binary on load:', err);
+    if (feedbackEl) feedbackEl.textContent = 'Error generating number — see console.';
+  }
+});
+</script>
 </body>
 </html>
