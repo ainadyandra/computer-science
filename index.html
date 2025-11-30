@@ -108,6 +108,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ]
 };
+window.startQuiz = function(topic) {
+    if(!quizzes[topic]) return;
+    currentQuiz = quizzes[topic];
+    currentIndex = 0;
+    correctCount = 0;
+    showQuestion();
+}
+
+window.showQuestion = function() {
+    const quizArea = document.getElementById('quiz-area');
+    quizArea.innerHTML = '';
+
+    if(currentIndex >= currentQuiz.length){
+        quizArea.innerHTML = `<p>You scored ${correctCount} out of ${currentQuiz.length}!</p>
+                              <button onclick="startQuiz('${currentQuiz[0]?.topic||'compression'}')">Retry</button>`;
+        return;
+    }
+
+    const q = currentQuiz[currentIndex];
+    const div = document.createElement('div');
+    div.innerHTML = `<p><strong>Q${currentIndex+1}:</strong> ${q.q}</p>`;
+
+    q.choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = choice;
+        btn.style.display = 'block';
+        btn.style.margin = '4px 0';
+        btn.onclick = () => checkAnswer(i);
+        div.appendChild(btn);
+    });
+
+    quizArea.appendChild(div);
+}
+
+window.checkAnswer = function(selectedIndex){
+    const q = currentQuiz[currentIndex];
+    const quizArea = document.getElementById('quiz-area');
+
+    if(selectedIndex === q.a){
+        correctCount++;
+        quizArea.innerHTML = `<p>✔ Correct!</p>`;
+    } else {
+        quizArea.innerHTML = `<p>✘ Wrong! Correct answer: ${q.choices[q.a]}</p>`;
+    }
+
+    currentIndex++;
+    setTimeout(showQuestion, 1000);
+}
 let currentQuiz = [];
 let currentIndex = 0;
 let correctCount = 0;
