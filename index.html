@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Computer Science Revision</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Computer Science Revision</h1>
+  <p>Binary to Denary + Quizzes</p>
+  <hr>
+  <h2>Binary to Denary</h2>
+  <p>Computers only understand 0 (off) and 1 (on).</p>
+  <p>Binary is how all data is stored: text, images, sound, programs.</p>
+  <p>1 byte = 8 bits</p>
+  <div id="binary-game">
+    <p><strong>Convert this binary number to denary:</strong></p>
+    <p id="binary-number" style="font-size: 1.5em; font-weight: bold;">
+      <!-- binary numbers here -->
+    </p>
+    <input type="number" id="user-answer" placeholder="Enter denary value">
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="generateBinary()">Next</button>
+    <p id="feedback"></p>
+    <p>Score:<span id="score">0</span></p>
+  </div>
+  <hr>
+  <script>
+    let score = 0;
+    let currentBinary = "";
+    // Generate a random 4-8 bit binary number
+    function generateBinary() {
+      const length = Math.floor(Math.random() * 5) + 4; // 4 to 8 bits
+      currentBinary = '';
+      for (let i = 0; i < length; i++ {
+        currentBinary += Math.floor(Math.random() * 2); // adds 0 or 1
+      }
+      document.getElementById("binary-number").textContent = currentBinary;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("user-answer").value = "";
+    }
+    // convert user's input + check answer
+    function checkAnswer() {
+      score++;
+      document.getElementById("feedback").textContent = "✓ Correct!";
+    } else {
+      document.getElementById("feedback").textContent = "✗ Incorrect! Correct answer: " +correct;
+    }
+    // when page loads generate a number
+    generateBinary();
+  </script>
+  
+</body>
+</html>
