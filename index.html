@@ -134,16 +134,21 @@ document.addEventListener('DOMContentLoaded', () => {
     compression: [
         { q: "What is compression?", choices: ["Increases file size", "Reduces file size for storage and transfer", "Deletes the file", "Changes file type only"], a: 1 },
         { q: "Which is an example of lossy compression?", choices: ["JPEG image", "ZIP file", "PNG image", "Text file"], a: 0 },
-        { q: "Which is an example of lossless compression?", choices: ["MP3 audio", "JPEG image", "ZIP file", "MP4 video"], a: 2 }
+        { q: "Which is an example of lossless compression?", choices: ["MP3 audio", "JPEG image", "ZIP file", "MP4 video"], a: 2 },
+      { q: "What is the disadvantage of lossy compression?", choices: ["Smaller file size", "Data is lost permanently", "Can return to original"], a: 1},
+      { q: "What type of compression can fully return to its original and no data is lost?", choices: ["Lossy Compression", "Lossless Compression"], a: 1}
     ],
     esafety: [
         { q: "Which action helps protect privacy online?", choices: ["Share passwords with friends", "Use strong passwords", "Click unknown links", "Talk to strangers online"], a: 1 },
-        { q: "If you see cyberbullying online, what should you do?", choices: ["Ignore it", "Join in", "Report it", "Screenshot and post"], a: 2 }
+        { q: "If you see cyberbullying online, what should you do?", choices: ["Ignore it", "Join in", "Report it", "Screenshot and post"], a: 2 },
+      { q: "Which action should you not do online?", choices: ["Use private accounts", "Clicking suspicious links & downloads", "Not talking to strangers", "Not sharing personal information"], a: 1}
     ],
     html: [
         { q: "What does HTML do?", choices: ["Designs the webpage style", "Controls structure of webpage", "Stores images", "Runs JavaScript"], a: 1 },
         { q: "Which tag creates a hyperlink?", choices: ["<a>", "<img>", "<p>", "<div>"], a: 0 },
-        { q: "Which tag creates a list item?", choices: ["<li>", "<ul>", "<ol>", "<list>"], a: 0 }
+        { q: "Which tag creates a list item?", choices: ["<li>", "<ul>", "<ol>", "<list>"], a: 0 },
+      { q: "What is the purpose of a <div> tag?", choices: ["Main heading", "Link", "Bullet list", "Section block"], a: 3},
+      { q: "<ul><li>Item</li></ul> is an example of...", choices: ["Link", "Bullet list", "Image", "Paragraph"], a: 2}
     ]
 };
 let quizCurrentQuiz = [];
