@@ -2,24 +2,29 @@
 <html>
 <head>
   <title>Computer Science Revision</title>
-  <meta charset="UTF-8">
+  <meta charset="UTF-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap" rel="stylesheet">8">
   <style>
 body {
-    background-color: #0d0d0d; /* very dark background */
-    color: #e0e0e0; /* light gray text */
-    font-family: 'Courier New', monospace; /* hacker feel */
+    background-color: #0d0d0d; 
+    color: #e0e0e0; 
+  font-family: "Gasoek One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
     line-height: 1.5;
     padding: 20px;
+  text-align: center;
 }
 h1, h2 {
-    color: #00ffcc; /* neon cyan-ish */
+    color: #00ffcc; 
 }
 hr {
     border: 1px solid #00ffcc;
     margin: 20px 0;
 }
 button {
-    background-color: #1a1a1a; /* dark button */
+    background-color: #1a1a1a; 
     color: #00ffcc;
     border: 2px solid #00ffcc;
     border-radius: 6px;
@@ -40,20 +45,6 @@ input[type="number"] {
     color: #e0e0e0;
     width: 150px;
 }
-#quiz-area {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #00ffcc;
-    border-radius: 8px;
-    background-color: #121212;
-}
-#binary-game {
-    padding: 10px;
-    border: 1px solid #00ffcc;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    background-color: #121212;
-}
 #feedback {
     font-weight: bold;
     margin-top: 10px;
@@ -62,6 +53,32 @@ input[type="number"] {
 #score {
     color: #00ffcc;
     font-weight: bold;
+}
+    #binary-game, #quiz-section, #study-materials {
+    display: inline-block; /* so it doesn’t stretch 100% width */
+    text-align: left; /* content inside panel left-aligned for readability */
+    padding: 15px;
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    background-color: #121212;
+    margin-bottom: 20px;
+    max-width: 600px;
+}
+    #study-materials nav button {
+    margin: 5px;
+    display: inline-block;
+    background-color: #1a1a1a;
+    color: #00ffcc;
+    border: 2px solid #00ffcc;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#study-materials nav button:hover {
+    background-color: #00ffcc;
+    color: #0d0d0d;
 }
 </style>
 </head>
@@ -94,6 +111,17 @@ input[type="number"] {
     <div id="quiz-area"></div>
 </div>
 <hr>
+<h2>Study Materials</h2>
+
+<div id="study-materials">
+    <nav>
+        <button onclick="showMaterial('compression')">Compression</button>
+        <button onclick="showMaterial('esafety')">E-Safety</button>
+        <button onclick="showMaterial('html')">HTML</button>
+    </nav>
+
+    <div id="material-content" style="margin-top: 10px; text-align: left;"></div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -228,6 +256,53 @@ window.selectAnswer = function(selectedIndex) {
     if (feedbackEl) feedbackEl.textContent = 'Error generating number — see console.';
   }
 });
+  const studyMaterials = {
+    compression: `
+        <h3>Compression: Lossy and Lossless</h3>
+        <p><strong>What is compression?</strong> Compression reduces file size so it uses less storage and transfers faster.</p>
+        <p><strong>Lossy Compression</strong></p>
+        <ul>
+            <li>Removes some data permanently</li>
+            <li>Smaller file size</li>
+            <li>Slight drop in quality</li>
+            <li>Used for: JPEG images, MP3 music, MP4 videos</li>
+        </ul>
+        <p><strong>Lossless Compression</strong></p>
+        <ul>
+            <li>No data is lost</li>
+            <li>Can fully return to original</li>
+            <li>Used for: ZIP files, PNG images, text files</li>
+        </ul>
+    `,
+    esafety: `
+        <h3>E-Safety</h3>
+        <ul>
+            <li>Use private accounts</li>
+            <li>Don't share personal information</li>
+            <li>Avoid suspicious links and downloads</li>
+            <li>Use strong passwords</li>
+            <li>Report cyberbullying or unsafe behaviour</li>
+            <li>Don't talk to strangers online</li>
+        </ul>
+    `,
+    html: `
+        <h3>HTML (HyperText Markup Language)</h3>
+        <p><strong>What is HTML?</strong> HTML is the language used to create webpages. It tells the browser what to show (text, images, links, lists). HTML controls the structure of a webpage, not the design.</p>
+        <p><strong>What HTML is used for:</strong></p>
+        <ul>
+            <li>Adding text, images, videos, links</li>
+            <li>Creating headings and paragraphs</li>
+            <li>Making lists and tables</li>
+            <li>Building forms for user input</li>
+            <li>Structuring a webpage into sections</li>
+        </ul>
+    `
+};
+
+window.showMaterial = function(topic){
+    const contentDiv = document.getElementById('material-content');
+    contentDiv.innerHTML = studyMaterials[topic] || "<p>Material not found.</p>";
+}
 </script>
 </body>
 </html>
