@@ -24,13 +24,142 @@
   </div>
   <hr>
   
+  <h2>Quick Quizzes</h2>
+<div id="quiz-section">
+    <p>Select a topic to start the quiz:</p>
+    <button onclick="startQuiz('compression')">Compression</button>
+    <button onclick="startQuiz('esafety')">E-Safety</button>
+    <button onclick="startQuiz('html')">HTML</button>
+    <div id="quiz-area"></div>
+</div>
+<hr>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const binaryEl = document.getElementById('binary-number');
   const feedbackEl = document.getElementById('feedback');
   const userInput = document.getElementById('user-answer');
   const scoreEl = document.getElementById('score');
+  const quizzes = {
+    compression: [
+        {
+            q: "What is compression?",
+            choices: [
+                "Increases file size", 
+                "Reduces file size for storage and transfer", 
+                "Deletes the file", 
+                "Changes file type only"
+            ],
+            a: 1
+        },
+        {
+            q: "Which is an example of lossy compression?",
+            choices: ["JPEG image", "ZIP file", "PNG image", "Text file"],
+            a: 0
+        },
+        {
+            q: "Which is an example of lossless compression?",
+            choices: ["MP3 audio", "JPEG image", "ZIP file", "MP4 video"],
+            a: 2
+        }
+    ],
+    esafety: [
+        {
+            q: "Which action helps protect privacy online?",
+            choices: [
+                "Share passwords with friends", 
+                "Use strong passwords", 
+                "Click unknown links", 
+                "Talk to strangers online"
+            ],
+            a: 1
+        },
+        {
+            q: "If you see cyberbullying online, what should you do?",
+            choices: [
+                "Ignore it", 
+                "Join in", 
+                "Report it", 
+                "Screenshot and post"
+            ],
+            a: 2
+        }
+    ],
+    html: [
+        {
+            q: "What does HTML do?",
+            choices: [
+                "Designs the webpage style", 
+                "Controls structure of webpage", 
+                "Stores images", 
+                "Runs JavaScript"
+            ],
+            a: 1
+        },
+        {
+            q: "Which tag creates a hyperlink?",
+            choices: ["<a>", "<img>", "<p>", "<div>"],
+            a: 0
+        },
+        {
+            q: "Which tag creates a list item?",
+            choices: ["<li>", "<ul>", "<ol>", "<list>"],
+            a: 0
+        }
+    ]
+};
+let currentQuiz = [];
+let currentIndex = 0;
+let correctCount = 0;
 
+function startQuiz(topic) {
+    if(!quizzes[topic]) return;
+    currentQuiz = quizzes[topic];
+    currentIndex = 0;
+    correctCount = 0;
+    showQuestion();
+}
+
+function showQuestion() {
+    const quizArea = document.getElementById('quiz-area');
+    quizArea.innerHTML = '';
+
+    if(currentIndex >= currentQuiz.length){
+        quizArea.innerHTML = `<p>You scored ${correctCount} out of ${currentQuiz.length}!</p>
+                              <button onclick="startQuiz('${currentQuiz[0]?.topic||'compression'}')">Retry</button>`;
+        return;
+    }
+
+    const q = currentQuiz[currentIndex];
+    const div = document.createElement('div');
+    div.innerHTML = `<p><strong>Q${currentIndex+1}:</strong> ${q.q}</p>`;
+
+    q.choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = choice;
+        btn.style.display = 'block';
+        btn.style.margin = '4px 0';
+        btn.onclick = () => checkAnswer(i);
+        div.appendChild(btn);
+    });
+
+    quizArea.appendChild(div);
+}
+
+function checkAnswer(selectedIndex){
+    const q = currentQuiz[currentIndex];
+    const quizArea = document.getElementById('quiz-area');
+
+    if(selectedIndex === q.a){
+        correctCount++;
+        quizArea.innerHTML = `<p>✔ Correct!</p>`;
+    } else {
+        quizArea.innerHTML = `<p>✘ Wrong! Correct answer: ${q.choices[q.a]}</p>`;
+    }
+
+    currentIndex++;
+    setTimeout(showQuestion, 1000);
+}
   if (!binaryEl) {
     console.error('Missing element: #binary-number. Make sure your HTML has <p id="binary-number"></p>');
     if (feedbackEl) feedbackEl.textContent = 'Error: game not set up correctly (see console).';
