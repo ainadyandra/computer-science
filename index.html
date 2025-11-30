@@ -40,76 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedbackEl = document.getElementById('feedback');
   const userInput = document.getElementById('user-answer');
   const scoreEl = document.getElementById('score');
-  const quizzes = {
+ const quizzes = {
     compression: [
-        {
-            q: "What is compression?",
-            choices: [
-                "Increases file size", 
-                "Reduces file size for storage and transfer", 
-                "Deletes the file", 
-                "Changes file type only"
-            ],
-            a: 1
-        },
-        {
-            q: "Which is an example of lossy compression?",
-            choices: ["JPEG image", "ZIP file", "PNG image", "Text file"],
-            a: 0
-        },
-        {
-            q: "Which is an example of lossless compression?",
-            choices: ["MP3 audio", "JPEG image", "ZIP file", "MP4 video"],
-            a: 2
-        }
+        { q: "What is compression?", choices: ["Increases file size", "Reduces file size for storage and transfer", "Deletes the file", "Changes file type only"], a: 1 },
+        { q: "Which is an example of lossy compression?", choices: ["JPEG image", "ZIP file", "PNG image", "Text file"], a: 0 },
+        { q: "Which is an example of lossless compression?", choices: ["MP3 audio", "JPEG image", "ZIP file", "MP4 video"], a: 2 }
     ],
     esafety: [
-        {
-            q: "Which action helps protect privacy online?",
-            choices: [
-                "Share passwords with friends", 
-                "Use strong passwords", 
-                "Click unknown links", 
-                "Talk to strangers online"
-            ],
-            a: 1
-        },
-        {
-            q: "If you see cyberbullying online, what should you do?",
-            choices: [
-                "Ignore it", 
-                "Join in", 
-                "Report it", 
-                "Screenshot and post"
-            ],
-            a: 2
-        }
+        { q: "Which action helps protect privacy online?", choices: ["Share passwords with friends", "Use strong passwords", "Click unknown links", "Talk to strangers online"], a: 1 },
+        { q: "If you see cyberbullying online, what should you do?", choices: ["Ignore it", "Join in", "Report it", "Screenshot and post"], a: 2 }
     ],
     html: [
-        {
-            q: "What does HTML do?",
-            choices: [
-                "Designs the webpage style", 
-                "Controls structure of webpage", 
-                "Stores images", 
-                "Runs JavaScript"
-            ],
-            a: 1
-        },
-        {
-            q: "Which tag creates a hyperlink?",
-            choices: ["<a>", "<img>", "<p>", "<div>"],
-            a: 0
-        },
-        {
-            q: "Which tag creates a list item?",
-            choices: ["<li>", "<ul>", "<ol>", "<list>"],
-            a: 0
-        }
+        { q: "What does HTML do?", choices: ["Designs the webpage style", "Controls structure of webpage", "Stores images", "Runs JavaScript"], a: 1 },
+        { q: "Which tag creates a hyperlink?", choices: ["<a>", "<img>", "<p>", "<div>"], a: 0 },
+        { q: "Which tag creates a list item?", choices: ["<li>", "<ul>", "<ol>", "<list>"], a: 0 }
     ]
 };
-window.startQuiz = function(topic) {
-    if(!quizzes[topic]) return;
+let currentQuiz = [];
+let currentIndex = 0;
+let correctCount = 0;
+  window.startQuiz = function(topic) {
+    if (!quizzes[topic]) return;
     currentQuiz = quizzes[topic];
     currentIndex = 0;
     correctCount = 0;
@@ -120,7 +71,7 @@ window.showQuestion = function() {
     const quizArea = document.getElementById('quiz-area');
     quizArea.innerHTML = '';
 
-    if(currentIndex >= currentQuiz.length){
+    if (currentIndex >= currentQuiz.length) {
         quizArea.innerHTML = `<p>You scored ${correctCount} out of ${currentQuiz.length}!</p>
                               <button onclick="startQuiz('${currentQuiz[0]?.topic||'compression'}')">Retry</button>`;
         return;
@@ -135,70 +86,19 @@ window.showQuestion = function() {
         btn.textContent = choice;
         btn.style.display = 'block';
         btn.style.margin = '4px 0';
-        btn.onclick = () => checkAnswer(i);
+        // reference the global function
+        btn.onclick = () => window.checkAnswer(i);
         div.appendChild(btn);
     });
 
     quizArea.appendChild(div);
 }
 
-window.checkAnswer = function(selectedIndex){
-    const q = currentQuiz[currentIndex];
+window.checkAnswer = function(selectedIndex) {
     const quizArea = document.getElementById('quiz-area');
-
-    if(selectedIndex === q.a){
-        correctCount++;
-        quizArea.innerHTML = `<p>✔ Correct!</p>`;
-    } else {
-        quizArea.innerHTML = `<p>✘ Wrong! Correct answer: ${q.choices[q.a]}</p>`;
-    }
-
-    currentIndex++;
-    setTimeout(showQuestion, 1000);
-}
-let currentQuiz = [];
-let currentIndex = 0;
-let correctCount = 0;
-
-function startQuiz(topic) {
-    if(!quizzes[topic]) return;
-    currentQuiz = quizzes[topic];
-    currentIndex = 0;
-    correctCount = 0;
-    showQuestion();
-}
-
-function showQuestion() {
-    const quizArea = document.getElementById('quiz-area');
-    quizArea.innerHTML = '';
-
-    if(currentIndex >= currentQuiz.length){
-        quizArea.innerHTML = `<p>You scored ${correctCount} out of ${currentQuiz.length}!</p>
-                              <button onclick="startQuiz('${currentQuiz[0]?.topic||'compression'}')">Retry</button>`;
-        return;
-    }
-
     const q = currentQuiz[currentIndex];
-    const div = document.createElement('div');
-    div.innerHTML = `<p><strong>Q${currentIndex+1}:</strong> ${q.q}</p>`;
 
-    q.choices.forEach((choice, i) => {
-        const btn = document.createElement('button');
-        btn.textContent = choice;
-        btn.style.display = 'block';
-        btn.style.margin = '4px 0';
-        btn.onclick = () => checkAnswer(i);
-        div.appendChild(btn);
-    });
-
-    quizArea.appendChild(div);
-}
-
-function checkAnswer(selectedIndex){
-    const q = currentQuiz[currentIndex];
-    const quizArea = document.getElementById('quiz-area');
-
-    if(selectedIndex === q.a){
+    if (selectedIndex === q.a) {
         correctCount++;
         quizArea.innerHTML = `<p>✔ Correct!</p>`;
     } else {
